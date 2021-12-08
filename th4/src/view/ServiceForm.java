@@ -22,6 +22,7 @@ public class ServiceForm extends javax.swing.JPanel {
         String[] cols = {"Mã DV", "Tên DV", "Nhóm DV", "Chi phí", "Giá cước"};
         tableModel = new DefaultTableModel(cols, 0);
         jTable1.setModel(tableModel);
+        txtFieldId.setEditable(false);
         buttonState(true);
         adding = false;
         editting = false;
@@ -123,6 +124,11 @@ public class ServiceForm extends javax.swing.JPanel {
         });
 
         btnEdit.setText("Sửa");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +138,11 @@ public class ServiceForm extends javax.swing.JPanel {
         });
 
         btnShow.setText("Hiển thị");
+        btnShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowActionPerformed(evt);
+            }
+        });
 
         btnSkip.setText("Bỏ qua");
         btnSkip.addActionListener(new java.awt.event.ActionListener() {
@@ -171,18 +182,17 @@ public class ServiceForm extends javax.swing.JPanel {
                             .addComponent(txtFieldCost)
                             .addComponent(comboBoxGroup, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnShow, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                            .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnSkip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(10, 10, 10))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnShow, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnSkip, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10))))))
+                                .addGap(36, 36, 36))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,7 +239,7 @@ public class ServiceForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+         IOFile.viet(filePath, services);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -291,7 +301,36 @@ public class ServiceForm extends javax.swing.JPanel {
            }
         }
         if(editting){
-           JOptionPane.showMessageDialog(this, "Tính năng đăng phát triển");
+            int row = jTable1.getSelectedRow();
+            String name;
+            name = txtFieldName.getText();
+            int id = Integer.parseInt(txtFieldId.getText());
+            String group = comboBoxGroup.getSelectedItem().toString();
+            long cost = Integer.parseInt(tableModel.getValueAt(row , 3).toString());
+            long fee = Integer.parseInt(tableModel.getValueAt(row , 4).toString());
+
+            try{
+                cost = Integer.parseInt(txtFieldCost.getText());
+                fee = Integer.parseInt(txtFieldFee.getText());
+                
+            } catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(this, "Nhap so dung dinh dang");
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            //int ma, String ten, String tacGia, String chuyenNganh, int soLuong
+            ServiceModel service = new ServiceModel(
+                    id, name, group, cost, fee
+            );
+            tableModel.setValueAt(id, row, 0);
+            tableModel.setValueAt(name, row, 1);
+            tableModel.setValueAt(group, row, 2);
+            tableModel.setValueAt(cost, row, 3);
+            tableModel.setValueAt(fee, row, 4);
+            services.set(row, service);
+            editting = false;
+            buttonState(true);
+           
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -323,6 +362,25 @@ public class ServiceForm extends javax.swing.JPanel {
 
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowActionPerformed
+        initData();
+        tableModel.setRowCount(0);
+        for(ServiceModel sv: services){
+            tableModel.addRow(sv.toObjects());
+        }
+    }//GEN-LAST:event_btnShowActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        int row = jTable1.getSelectedRow();
+        if( row < 0 || row > jTable1.getRowCount()-1){
+            JOptionPane.showMessageDialog(this, "Chọn dịch vụ để sửa");
+        } else{
+            editting = true;
+            buttonState(false);
+            txtFieldName.requestFocus();
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

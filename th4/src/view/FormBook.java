@@ -396,6 +396,7 @@ public class FormBook extends javax.swing.JPanel {
 
     private void btnSaveToFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveToFileActionPerformed
         IOFile.viet(filePath, books);
+        JOptionPane.showMessageDialog(this, "đã lưu dữ liệu: " + filePath);
     }//GEN-LAST:event_btnSaveToFileActionPerformed
 
     private void btnShowBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowBookActionPerformed
