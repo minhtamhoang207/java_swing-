@@ -213,6 +213,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="S&#x1eed;a"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditBookActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btxDeleteBook">
       <Properties>
@@ -226,11 +229,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Hi&#x1ec3;n th&#x1ecb;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnShowBookActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnSaveToFile">
       <Properties>
         <Property name="text" type="java.lang.String" value="L&#x1b0;u v&#xe0;o file"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveToFileActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnUpdate">
       <Properties>

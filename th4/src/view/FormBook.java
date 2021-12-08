@@ -21,6 +21,7 @@ public class FormBook extends javax.swing.JPanel {
         String[] cols = {"Mã sách", "Tên sách", "Tác giả", "Thể loại", "Số lượng"};
         tableModel = new DefaultTableModel(cols, 0);
         jTable1.setModel(tableModel);
+        txtfieldBookCode.setEditable(false);
         buttonState(true);
         adding = false;
         editting = false;
@@ -119,6 +120,11 @@ public class FormBook extends javax.swing.JPanel {
         });
 
         btnEditBook.setText("Sửa");
+        btnEditBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditBookActionPerformed(evt);
+            }
+        });
 
         btxDeleteBook.setText("Xóa");
         btxDeleteBook.addActionListener(new java.awt.event.ActionListener() {
@@ -128,8 +134,18 @@ public class FormBook extends javax.swing.JPanel {
         });
 
         btnShowBook.setText("Hiển thị");
+        btnShowBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowBookActionPerformed(evt);
+            }
+        });
 
         btnSaveToFile.setText("Lưu vào file");
+        btnSaveToFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveToFileActionPerformed(evt);
+            }
+        });
 
         btnUpdate.setText("Cập nhật");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -309,10 +325,43 @@ public class FormBook extends javax.swing.JPanel {
            } catch (NegativeNumException e){
                JOptionPane.showMessageDialog(this, "Số lượng phải > 0");
                txtfieldAmount.requestFocus();
+           } catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng");
+                txtfieldAmount.requestFocus();
            }
         }
         if(editting){
-            System.out.println("hehe");
+            int row = jTable1.getSelectedRow();
+            String name, author;
+            name = txtfieldBookName.getText();
+            author = txtfieldAuthor.getText();
+            int id = Integer.parseInt(txtfieldBookCode.getText());
+            String cn = comboBoxCategory.getSelectedItem().toString();
+            int s1 = Integer.parseInt(tableModel.getValueAt(row , 4).toString());
+ 
+            try{
+                s1 = Integer.parseInt(txtfieldAmount.getText());
+                
+            } catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(this, "Nhap so dung dinh dang");
+            }
+            //int ma, String ten, String tacGia, String chuyenNganh, int soLuong
+            BookModel book = new BookModel(
+                    id, 
+                    name, 
+                    author,
+                    cn, 
+                    s1
+            );
+            tableModel.setValueAt(id, row, 0);
+            tableModel.setValueAt(name, row, 1);
+            tableModel.setValueAt(author, row, 2);
+            tableModel.setValueAt(cn, row, 3);
+            tableModel.setValueAt(s1, row, 4);
+            books.set(row, book);
+            editting = false;
+            buttonState(true);
+           
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -322,7 +371,7 @@ public class FormBook extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn sách");
         } else{
             tableModel.removeRow(currentRow);
-            
+            books.remove(currentRow);
         }
     }//GEN-LAST:event_btxDeleteBookActionPerformed
 
@@ -344,6 +393,29 @@ public class FormBook extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnSaveToFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveToFileActionPerformed
+        IOFile.viet(filePath, books);
+    }//GEN-LAST:event_btnSaveToFileActionPerformed
+
+    private void btnShowBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowBookActionPerformed
+        initData();
+        tableModel.setRowCount(0);
+        for(BookModel bm: books){
+            tableModel.addRow(bm.toObjects());
+        }
+    }//GEN-LAST:event_btnShowBookActionPerformed
+
+    private void btnEditBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditBookActionPerformed
+        int row = jTable1.getSelectedRow();
+        if( row < 0 || row > jTable1.getRowCount()-1){
+            JOptionPane.showMessageDialog(this, "Chọn sách để sửa");
+        } else{
+            editting = true;
+            buttonState(false);
+            txtfieldBookName.requestFocus();
+        }
+    }//GEN-LAST:event_btnEditBookActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

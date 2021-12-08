@@ -110,12 +110,14 @@
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnDelete" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
-                  <Component id="btnShow" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
-                  <Component id="btnSkip" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnUpdate" alignment="0" min="-2" pref="47" max="-2" attributes="0"/>
-                  <Component id="btnEdit" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnDelete" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="btnShow" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="btnSkip" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+                      <Component id="btnEdit" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace pref="84" max="32767" attributes="0"/>
           </Group>
