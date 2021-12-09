@@ -48,7 +48,9 @@ public class QLSModel implements Serializable{
     public void setStatus(String status) {
         this.status = status;
     }
-    
+    public String getIdAndName() {
+        return getReader().getId() + " " + getReader().getName();
+    }
     
      public Object[] toObjects(){
         return new Object[]{

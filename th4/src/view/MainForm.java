@@ -12,9 +12,11 @@ public class MainForm extends javax.swing.JFrame {
         ServiceForm serviceForm = new ServiceForm();
         FormReader formReader = new FormReader();
         FormQL formQL = new FormQL();
+        FinalForm finalForm = new FinalForm();
         tab.addTab("QL sách", formBook);
         tab.addTab("QL Bạn đọc", formReader);
         tab.addTab("QL Mượn sách", formQL);
+        tab.addTab("Thống kê", finalForm);
         tab.addTab("QL dịch vụ", serviceForm);
         setLocationRelativeTo(this);
     }
