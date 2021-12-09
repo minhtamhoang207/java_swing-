@@ -34,6 +34,8 @@ public class ServiceForm extends javax.swing.JPanel {
         File file = new File(filePath);
         if(file.exists()){
            services = IOFile.doc(filePath);
+        } else{
+            services = new ArrayList<>();
         }
     }
     
